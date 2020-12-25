@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const HeaderDiv = styled.header`
-  background: #e7e7e7;
+  border-bottom: 5px #e8e8e8 solid;
 `;
 
 const Div = styled.div`
@@ -14,21 +14,15 @@ const Div = styled.div`
 
 const HeaderLink = styled(Link)`
   display: inline-block;
-  color: white;
   text-decoration: none;
   font-size: 1rem;
   margin: 1rem 0;
+  color: black;
 `;
 
 interface HeaderProp {
   siteTitle: string;
 }
-
-/**
- * Returns a styled header for reuse in each page.
- * @param {<string>} setTitle sets the title of the page, format: "<setTitle> | Gatsby Starter", navigate to root/gatsby-config.js to change the second part of the title.
- * @return {<React.ReactElement>}
- */
 
 const Header = ({ siteTitle }: HeaderProp): React.ReactElement => (
   <HeaderDiv>

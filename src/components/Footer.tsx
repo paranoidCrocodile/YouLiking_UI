@@ -7,7 +7,7 @@ const FooterDiv = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #e7e7e7;
+  border-top: 5px #e8e8e8 solid;
   color: black;
 `;
 

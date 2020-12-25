@@ -4,14 +4,13 @@ import styled from "styled-components";
 const Front = styled.div`
   width: 100vw;
   height: 40vh;
-  background-color: #ccc;
-  color: white;
+  color: black;
 `;
 
 const FrontDiv = styled.div`
   width: 1200px;
   margin: 0 auto;
-  padding: 3rem 0;
+  padding: 1.5rem 0 2.5rem 0;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -39,12 +38,17 @@ const SearchBar = styled.input`
   width: 80%;
   height: 100%;
   font-size: 0.7rem;
+  border: none;
+  background-color: #e8e8e8;
 `;
 
 const SearchButton = styled.button`
   display: inline-block;
   width: 20%;
   height: 100%;
+  background-color: #ff0000;
+  border: none;
+  color: white;
 `;
 
 const FrontPanel = (): React.ReactElement => (
