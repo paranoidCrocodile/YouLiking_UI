@@ -1,5 +1,11 @@
-import React from "react";
+import React, { useRef, Dispatch, SetStateAction, RefObject } from "react";
 import styled from "styled-components";
+import { ResultObj } from "../pages/index";
+
+interface FrontPanelProps {
+  changeResult: Dispatch<SetStateAction<ResultObj>>;
+  requestData: (input: RefObject<HTMLInputElement>) => Promise<ResultObj>;
+}
 
 const Front = styled.div`
   width: 100vw;
@@ -51,17 +57,31 @@ const SearchButton = styled.button`
   color: white;
 `;
 
-const FrontPanel = (): React.ReactElement => (
-  <Front>
-    <FrontDiv>
-      <Title>Youtube Downloader</Title>
-      <Subtitle>Download any high-quality Youtube video for free!</Subtitle>
-      <SearchBarDiv>
-        <SearchBar placeholder="https://www.youtube.com/watch?v=g3jCAyPai2Y" />
-        <SearchButton>Search</SearchButton>
-      </SearchBarDiv>
-    </FrontDiv>
-  </Front>
-);
+const FrontPanel = ({
+  requestData,
+  changeResult,
+}: FrontPanelProps): React.ReactElement => {
+  const searchValue = useRef(null);
+  return (
+    <Front>
+      <FrontDiv>
+        <Title>Youtube Downloader</Title>
+        <Subtitle>Download any high-quality Youtube video for free!</Subtitle>
+        <SearchBarDiv>
+          <SearchBar
+            ref={searchValue}
+            type="text"
+            placeholder="https://www.youtube.com/watch?v=g3jCAyPai2Y"
+          />
+          <SearchButton
+            onClick={async () => changeResult(await requestData(searchValue))}
+          >
+            Search
+          </SearchButton>
+        </SearchBarDiv>
+      </FrontDiv>
+    </Front>
+  );
+};
 
 export default FrontPanel;

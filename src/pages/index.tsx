@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "../components/header";
 import FrontPanel from "../components/frontPanel";
 import Footer from "../components/Footer";
 import Instructions from "../components/instructions";
+import Card from "../components/card";
 import "../style/reset.css";
 
-interface IndexProps {
-  children: React.ReactNode;
+interface ResultObj {
+  result: string;
+  status: string;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -32,17 +34,33 @@ const Main = styled.main`
   max-width: 1200px;
 `;
 
-const Index = ({ children }: IndexProps): React.ReactElement => {
+const requestData = (
+  input: React.RefObject<HTMLInputElement>
+): Promise<ResultObj> =>
+  fetch(
+    `http://youliking.com/api/youtube_api.php?v=${input.current?.value || ""}`
+  )
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+
+const Index = (): React.ReactElement => {
+  const [result, changeResult] = useState<ResultObj>({
+    result: "",
+    status: "",
+  });
   return (
     <React.Fragment>
       <GlobalStyle />
       <HeaderDiv siteTitle="YouLiking" />
-      <FrontPanel />
-      <Instructions />
-      <Main>{children}</Main>
+      <FrontPanel changeResult={changeResult} requestData={requestData} />
+      {result.result == "" ? <Instructions /> : null}
+      <Main>
+        {result.result !== "" ? <Card htmlString={result.result} /> : null}
+      </Main>
       <Footer />
     </React.Fragment>
   );
 };
 
 export default Index;
+export { ResultObj };
