@@ -1,4 +1,10 @@
-import React, { useRef, Dispatch, SetStateAction, RefObject } from "react";
+import React, {
+  useRef,
+  Dispatch,
+  useState,
+  SetStateAction,
+  RefObject,
+} from "react";
 import styled from "styled-components";
 import { ResultObj } from "../pages/index";
 
@@ -62,6 +68,7 @@ const FrontPanel = ({
   changeResult,
 }: FrontPanelProps): React.ReactElement => {
   const searchValue = useRef(null);
+  const [timer, setTimer] = useState(0);
   return (
     <Front>
       <FrontDiv>
@@ -74,7 +81,15 @@ const FrontPanel = ({
             placeholder="https://www.youtube.com/watch?v=g3jCAyPai2Y"
           />
           <SearchButton
-            onClick={async () => changeResult(await requestData(searchValue))}
+            onClick={async () => {
+              const now = new Date().getTime();
+              if (timer == 0 || now - timer > 5000) {
+                setTimer(new Date().getTime());
+                changeResult(
+                  (await requestData(searchValue)) || { result: "", status: "" }
+                );
+              }
+            }}
           >
             Search
           </SearchButton>

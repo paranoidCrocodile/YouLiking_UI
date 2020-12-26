@@ -4,7 +4,7 @@ import Header from "../components/header";
 import FrontPanel from "../components/frontPanel";
 import Footer from "../components/Footer";
 import Instructions from "../components/instructions";
-import Card from "../components/card";
+import Result from "../components/result";
 import "../style/reset.css";
 
 interface ResultObj {
@@ -48,15 +48,17 @@ const Index = (): React.ReactElement => {
     result: "",
     status: "",
   });
+  const frontPanelProps = {
+    changeResult,
+    requestData,
+  };
   return (
     <React.Fragment>
       <GlobalStyle />
       <HeaderDiv siteTitle="YouLiking" />
-      <FrontPanel changeResult={changeResult} requestData={requestData} />
+      <FrontPanel {...frontPanelProps} />
       {result.result == "" ? <Instructions /> : null}
-      <Main>
-        {result.result !== "" ? <Card htmlString={result.result} /> : null}
-      </Main>
+      <Main>{result.result !== "" ? <Result /> : null}</Main>
       <Footer />
     </React.Fragment>
   );
