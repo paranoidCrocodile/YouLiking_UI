@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { ResultObj } from "../pages";
 
-const Result = (): React.ReactElement => {
+interface ResultProps {
+  resultObj: ResultObj;
+}
+
+const Result = ({ resultObj }: ResultProps): React.ReactElement => {
+  useEffect(() => console.log(resultObj), []);
   return <div></div>;
 };
 

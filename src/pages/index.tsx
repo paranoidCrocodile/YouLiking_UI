@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Header from "../components/header";
-import FrontPanel from "../components/frontPanel";
-import Footer from "../components/Footer";
-import Instructions from "../components/instructions";
-import Result from "../components/result";
-import "../style/reset.css";
+import {
+  Header,
+  FrontPanel,
+  Instructions,
+  Footer,
+  Main,
+} from "../components/index";
 
-interface ResultObj {
+interface PromiseObj {
   result: string;
   status: string;
+}
+
+interface StateObj {
+  response: PromiseObj;
+  isLoading: boolean;
+  isSearched: boolean;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -29,40 +36,35 @@ const HeaderDiv = styled(Header)`
   max-width: 1200px;
 `;
 
-const Main = styled.main`
-  margin: 0 auto;
-  max-width: 1200px;
-`;
-
 const requestData = (
   input: React.RefObject<HTMLInputElement>
-): Promise<ResultObj> =>
+): Promise<PromiseObj> =>
   fetch(
-    `http://youliking.com/api/youtube_api.php?v=${input.current?.value || ""}`
+    `http://youliking.com/api/youtube_api.php?v=${input?.current?.value || ""}`
   )
     .then((res) => res.json())
     .catch((err) => console.error(err));
 
 const Index = (): React.ReactElement => {
-  const [result, changeResult] = useState<ResultObj>({
-    result: "",
-    status: "",
+  const [state, setState] = useState<StateObj>({
+    response: {
+      result: "",
+      status: "",
+    },
+    isLoading: false,
+    isSearched: false,
   });
-  const frontPanelProps = {
-    changeResult,
-    requestData,
-  };
   return (
     <React.Fragment>
       <GlobalStyle />
       <HeaderDiv siteTitle="YouLiking" />
-      <FrontPanel {...frontPanelProps} />
-      {result.result == "" ? <Instructions /> : null}
-      <Main>{result.result !== "" ? <Result /> : null}</Main>
+      <FrontPanel {...{ requestData, setState }} />
+      <Main {...{ state }} />
+      <Instructions />
       <Footer />
     </React.Fragment>
   );
 };
 
 export default Index;
-export { ResultObj };
+export { StateObj, PromiseObj };

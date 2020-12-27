@@ -1,16 +1,17 @@
 import React, {
   useRef,
   Dispatch,
-  useState,
   SetStateAction,
   RefObject,
+  useState,
 } from "react";
 import styled from "styled-components";
-import { ResultObj } from "../pages/index";
+import { StateObj, PromiseObj } from "../pages/index";
+import merge from "../utils/merge";
 
 interface FrontPanelProps {
-  changeResult: Dispatch<SetStateAction<ResultObj>>;
-  requestData: (input: RefObject<HTMLInputElement>) => Promise<ResultObj>;
+  requestData: (input: RefObject<HTMLInputElement>) => Promise<PromiseObj>;
+  setState: Dispatch<SetStateAction<StateObj>>;
 }
 
 const Front = styled.div`
@@ -65,7 +66,7 @@ const SearchButton = styled.button`
 
 const FrontPanel = ({
   requestData,
-  changeResult,
+  setState,
 }: FrontPanelProps): React.ReactElement => {
   const searchValue = useRef(null);
   const [timer, setTimer] = useState(0);
@@ -83,10 +84,23 @@ const FrontPanel = ({
           <SearchButton
             onClick={async () => {
               const now = new Date().getTime();
+              setState((old) =>
+                merge(old, {
+                  isLoading: true,
+                  isSearched: true,
+                })
+              );
               if (timer == 0 || now - timer > 5000) {
                 setTimer(new Date().getTime());
-                changeResult(
-                  (await requestData(searchValue)) || { result: "", status: "" }
+                const response = await requestData(searchValue);
+                setState((old) =>
+                  merge(old, {
+                    response,
+                  })
+                );
+                setTimeout(
+                  () => setState((old) => merge(old, { isLoading: false })),
+                  5000
                 );
               }
             }}
