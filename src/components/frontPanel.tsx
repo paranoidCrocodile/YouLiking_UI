@@ -68,7 +68,7 @@ const FrontPanel = ({
   requestData,
   setState,
 }: FrontPanelProps): React.ReactElement => {
-  const searchValue = useRef(null);
+  const searchValue = useRef<HTMLInputElement>(null);
   const [timer, setTimer] = useState(0);
   return (
     <Front>
@@ -84,10 +84,20 @@ const FrontPanel = ({
           <SearchButton
             onClick={async () => {
               const now = new Date().getTime();
+              if (searchValue?.current?.value == "") {
+                setState((old) =>
+                  merge(old, {
+                    isError: true,
+                    errorMsg: "you didn't type anything in the search bar!",
+                  })
+                );
+                return;
+              }
               setState((old) =>
                 merge(old, {
                   isLoading: true,
                   isSearched: true,
+                  isError: false,
                 })
               );
               if (timer == 0 || now - timer > 5000) {

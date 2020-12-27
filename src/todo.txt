@@ -1,5 +1,8 @@
 2020-12-27, 10:45 PM
-  - 在state物件裡加上isError布林值，在如使用者沒有輸入任何url就按search按鈕等例外情況觸發。
-  - isError == true的時候，用main來顯示錯誤訊息，如:"您沒有輸入任何URL"等
-  - requestData()在向api發出post之前，先處理使用者輸入的字串。
-  - 加入載入svg並加上css animation
+  X 在state物件裡加上isError布林值，在如使用者沒有輸入任何url就按search按鈕等例外情況觸發。
+  X isError == true的時候，用main來顯示錯誤訊息，如:"您沒有輸入任何URL"等
+  X requestData()在向api發出post之前，先處理使用者輸入的字串。
+  X 加入載入svg並加上css animation
+
+2020-12-28 2:29 AM
+  - requestData()發送post之前，先檢查使用者輸入的字串是否為youtube影片網址，然後再將v=跟整段分開傳送給api

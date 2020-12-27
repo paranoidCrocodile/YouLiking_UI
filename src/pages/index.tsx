@@ -17,6 +17,8 @@ interface StateObj {
   response: PromiseObj;
   isLoading: boolean;
   isSearched: boolean;
+  isError: boolean;
+  errorMsg: string;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -39,7 +41,7 @@ const HeaderDiv = styled(Header)`
 const requestData = (
   input: React.RefObject<HTMLInputElement>
 ): Promise<PromiseObj> => {
-  const value = input?.current?.value || "";
+  const value = input?.current?.value;
   return fetch(
     `http://youliking.com/api/youtube_api.php?v=${input?.current?.value || ""}`
   )
@@ -55,6 +57,8 @@ const Index = (): React.ReactElement => {
     },
     isLoading: false,
     isSearched: false,
+    isError: false,
+    errorMsg: "",
   });
   return (
     <React.Fragment>

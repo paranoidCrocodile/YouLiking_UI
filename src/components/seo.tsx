@@ -15,16 +15,6 @@ interface metaObj {
   content: string;
 }
 
-/**
- * creates a search-engine optimized header tag with certain values determined by properties in the passed Prop object.
- * @param {object} propObject {
- *   @param {string} [name]
- *   @param {string} [property]
- *   @param {string} content
- * }
- * @return {React.ReactElement}
- */
-
 export default function SEO({
   description = "",
   lang = `en`,
