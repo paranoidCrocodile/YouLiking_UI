@@ -18,9 +18,12 @@ const Container = styled.div`
   height: 50vh;
   display: flex;
   justify-content: space-between;
-  transition: height 0.5s ease-in-out;
+  transition: height 0.25s ease-in-out;
   &.hidden {
     height: 0px;
+  }
+  &.erase-content * {
+    display: none;
   }
 `;
 
@@ -55,6 +58,7 @@ const Content = ({ state }: InstructionsProps) => {
     if (state.isLoading) {
       const node = container.current;
       node?.classList.add("hidden");
+      setTimeout(() => node?.classList.add("erase-content"), 250);
     }
   }, [state.isLoading]);
   return (
