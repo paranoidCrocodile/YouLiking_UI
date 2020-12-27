@@ -38,12 +38,14 @@ const HeaderDiv = styled(Header)`
 
 const requestData = (
   input: React.RefObject<HTMLInputElement>
-): Promise<PromiseObj> =>
-  fetch(
+): Promise<PromiseObj> => {
+  const value = input?.current?.value || "";
+  return fetch(
     `http://youliking.com/api/youtube_api.php?v=${input?.current?.value || ""}`
   )
     .then((res) => res.json())
     .catch((err) => console.error(err));
+};
 
 const Index = (): React.ReactElement => {
   const [state, setState] = useState<StateObj>({
@@ -60,7 +62,7 @@ const Index = (): React.ReactElement => {
       <HeaderDiv siteTitle="YouLiking" />
       <FrontPanel {...{ requestData, setState }} />
       <Main {...{ state }} />
-      <Instructions />
+      <Instructions {...{ state }} />
       <Footer />
     </React.Fragment>
   );

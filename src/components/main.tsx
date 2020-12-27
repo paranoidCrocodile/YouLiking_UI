@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 import { StateObj } from "../pages";
 
@@ -7,8 +7,7 @@ interface MainProps {
 }
 
 const MainDiv = styled.main`
-  margin: 0 auto;
-  max-width: 1200px;
+  background-color: #e8e8e8;
 `;
 
 const revealAnimation = keyframes`
@@ -17,12 +16,19 @@ const revealAnimation = keyframes`
 `;
 
 const RevealDiv = styled.div`
-  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
   border: 1px black solid;
-  animation-name: ${revealAnimation};
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
+  animation: 0.5s ease-in-out 0s 1 normal forwards running ${revealAnimation};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 1px black solid;
 `;
 
 const Result = styled.div`
@@ -31,17 +37,12 @@ const Result = styled.div`
   border: 1px black solid;
 `;
 
-const Main = ({ state }: MainProps): React.ReactElement => {
-  useEffect(() => console.log(state, "initial"), []);
-  return (
-    <MainDiv>
-      {state.isSearched ? (
-        <RevealDiv>
-          {state.isLoading} ? <div>Loading</div> : <Result />
-        </RevealDiv>
-      ) : null}
-    </MainDiv>
-  );
-};
+const Main = ({ state }: MainProps): React.ReactElement => (
+  <MainDiv>
+    {state.isSearched ? (
+      <RevealDiv>{state.isLoading ? <LoadingIcon /> : <Result />}</RevealDiv>
+    ) : null}
+  </MainDiv>
+);
 
 export default Main;
