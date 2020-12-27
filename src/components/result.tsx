@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { ResultObj } from "../pages";
+import { PromiseObj } from "../pages";
 
 interface ResultProps {
-  resultObj: ResultObj;
+  resultObj: PromiseObj;
 }
 
 const Result = ({ resultObj }: ResultProps): React.ReactElement => {

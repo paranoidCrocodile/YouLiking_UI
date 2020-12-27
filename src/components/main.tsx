@@ -32,7 +32,7 @@ const Result = styled.div`
 `;
 
 const Main = ({ state }: MainProps): React.ReactElement => {
-  useEffect(() => console.log(state));
+  useEffect(() => console.log(state, "initial"), []);
   return (
     <MainDiv>
       {state.isSearched ? (
