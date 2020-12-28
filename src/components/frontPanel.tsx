@@ -1,16 +1,9 @@
-import React, {
-  useRef,
-  Dispatch,
-  SetStateAction,
-  RefObject,
-  useState,
-} from "react";
+import React, { useRef, Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { StateObj, PromiseObj } from "../pages/index";
 import merge from "../utils/merge";
 
 interface FrontPanelProps {
-  requestData: (input: RefObject<HTMLInputElement>) => Promise<PromiseObj>;
   setState: Dispatch<SetStateAction<StateObj>>;
 }
 
@@ -64,10 +57,26 @@ const SearchButton = styled.button`
   color: white;
 `;
 
-const FrontPanel = ({
-  requestData,
-  setState,
-}: FrontPanelProps): React.ReactElement => {
+const extractURL = (link: string): RegExpMatchArray | null =>
+  link.match(
+    /^(?<url>(https?:\/\/)?(?<domain>www\.youtube\.com|youtu\.?be)\/watch\?v=(?<videoID>[\w_-]{11}))(&t=(?<watchedTime>\d+)s)?$/
+  );
+
+const requestData = (
+  input: React.RefObject<HTMLInputElement>
+): Promise<PromiseObj> | void => {
+  const value = input?.current?.value as string;
+  const groups = extractURL(value)?.["groups"];
+  if (groups) {
+    return fetch(
+      `http://youliking.com/api/youtube_api.php?v=${groups.videoID}&url=${groups.url}`
+    )
+      .then((res) => res.json())
+      .catch((err) => console.error(err));
+  }
+};
+
+const FrontPanel = ({ setState }: FrontPanelProps): React.ReactElement => {
   const searchValue = useRef<HTMLInputElement>(null);
   const [timer, setTimer] = useState(0);
   return (
@@ -83,34 +92,40 @@ const FrontPanel = ({
           />
           <SearchButton
             onClick={async () => {
-              const now = new Date().getTime();
-              if (searchValue?.current?.value == "") {
+              try {
+                const now = new Date().getTime();
+                if (searchValue?.current?.value == "") {
+                  throw "You didn't type anything in the search bar!";
+                }
+                setState((old) =>
+                  merge(old, {
+                    isLoading: true,
+                    isSearched: true,
+                    isError: false,
+                  })
+                );
+                if (timer == 0 || now - timer > 5000) {
+                  setTimer(new Date().getTime());
+                  const response = await requestData(searchValue);
+                  if (!response) {
+                    throw "the value you typed isn't a valid youtube link!";
+                  }
+                  setState((old) =>
+                    merge(old, {
+                      response,
+                    })
+                  );
+                  setTimeout(
+                    () => setState((old) => merge(old, { isLoading: false })),
+                    5000
+                  );
+                }
+              } catch (e) {
                 setState((old) =>
                   merge(old, {
                     isError: true,
-                    errorMsg: "you didn't type anything in the search bar!",
+                    errorMsg: e,
                   })
-                );
-                return;
-              }
-              setState((old) =>
-                merge(old, {
-                  isLoading: true,
-                  isSearched: true,
-                  isError: false,
-                })
-              );
-              if (timer == 0 || now - timer > 5000) {
-                setTimer(new Date().getTime());
-                const response = await requestData(searchValue);
-                setState((old) =>
-                  merge(old, {
-                    response,
-                  })
-                );
-                setTimeout(
-                  () => setState((old) => merge(old, { isLoading: false })),
-                  5000
                 );
               }
             }}

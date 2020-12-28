@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { StateObj } from "../pages";
+import Result from "../components/result";
 
 interface MainProps {
   state: StateObj;
@@ -25,7 +26,7 @@ const LoadingIcon = styled.div`
   border: 1px black solid;
 `;
 
-const Result = styled.div`
+const ResultDiv = styled(Result)`
   margin: 1rem 0;
   width: 100%;
   height: 50vh;
@@ -40,7 +41,7 @@ const ErrorMsg = styled.div`
 `;
 
 const Main = ({ state }: MainProps): React.ReactElement => {
-  const { isLoading, isError, errorMsg, isSearched } = state;
+  const { isLoading, isError, errorMsg, isSearched, response } = state;
   return (
     <MainDiv>
       <FlexDiv>
@@ -50,7 +51,7 @@ const Main = ({ state }: MainProps): React.ReactElement => {
           isLoading ? (
             <LoadingIcon />
           ) : (
-            <Result />
+            <ResultDiv {...{ response }} />
           )
         ) : null}
       </FlexDiv>

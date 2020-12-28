@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { PromiseObj } from "../pages";
 
 interface ResultProps {
-  resultObj: PromiseObj;
+  response: PromiseObj;
 }
 
-const Result = ({ resultObj }: ResultProps): React.ReactElement => {
-  useEffect(() => console.log(resultObj), []);
+const Result = ({ response }: ResultProps): React.ReactElement => {
+  useEffect(() => console.log(response), []);
   return <div></div>;
 };
 

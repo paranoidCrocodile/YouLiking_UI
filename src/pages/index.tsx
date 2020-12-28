@@ -9,8 +9,14 @@ import {
 } from "../components/index";
 
 interface PromiseObj {
-  result: string;
   status: string;
+  title: string;
+  format: {
+    "240": string;
+    "360": string;
+    "480": string;
+  };
+  img: string;
 }
 
 interface StateObj {
@@ -38,22 +44,17 @@ const HeaderDiv = styled(Header)`
   max-width: 1200px;
 `;
 
-const requestData = (
-  input: React.RefObject<HTMLInputElement>
-): Promise<PromiseObj> => {
-  const value = input?.current?.value;
-  return fetch(
-    `http://youliking.com/api/youtube_api.php?v=${input?.current?.value || ""}`
-  )
-    .then((res) => res.json())
-    .catch((err) => console.error(err));
-};
-
 const Index = (): React.ReactElement => {
   const [state, setState] = useState<StateObj>({
     response: {
-      result: "",
       status: "",
+      img: "",
+      title: "",
+      format: {
+        "240": "",
+        "360": "",
+        "480": "",
+      },
     },
     isLoading: false,
     isSearched: false,
@@ -64,7 +65,7 @@ const Index = (): React.ReactElement => {
     <React.Fragment>
       <GlobalStyle />
       <HeaderDiv siteTitle="YouLiking" />
-      <FrontPanel {...{ requestData, setState }} />
+      <FrontPanel {...{ setState }} />
       <Main {...{ state }} />
       <Instructions {...{ state }} />
       <Footer />
