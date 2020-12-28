@@ -5,4 +5,4 @@
   X 加入載入svg並加上css animation
 
 2020-12-28 2:29 AM
-  - requestData()發送post之前，先檢查使用者輸入的字串是否為youtube影片網址，然後再將v=跟整段分開傳送給api
+  X requestData()發送post之前，先檢查使用者輸入的字串是否為youtube影片網址，然後再將v=跟整段分開傳送給api

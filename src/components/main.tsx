@@ -1,14 +1,16 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { StateObj } from "../pages";
 import Result from "../components/result";
+import Instructions from "./instructions";
 
 interface MainProps {
   state: StateObj;
+  setState: Dispatch<SetStateAction<StateObj>>;
 }
 
 const MainDiv = styled.main`
-  border-top: 5px solid #e8e8e8;
+  background-color: #e8e8e8;
 `;
 
 const FlexDiv = styled.div`
@@ -26,13 +28,6 @@ const LoadingIcon = styled.div`
   border: 1px black solid;
 `;
 
-const ResultDiv = styled(Result)`
-  margin: 1rem 0;
-  width: 100%;
-  height: 50vh;
-  border: 1px black solid;
-`;
-
 const ErrorMsg = styled.div`
   width: 100%;
   padding: 1rem 0;
@@ -40,21 +35,25 @@ const ErrorMsg = styled.div`
   color: black;
 `;
 
-const Main = ({ state }: MainProps): React.ReactElement => {
-  const { isLoading, isError, errorMsg, isSearched, response } = state;
+const Main = ({ setState, state }: MainProps): React.ReactElement => {
+  const { isLoading, isError, errorMsg, isSearched } = state;
   return (
     <MainDiv>
-      <FlexDiv>
-        {isError ? (
-          <ErrorMsg>{errorMsg}</ErrorMsg>
-        ) : isSearched ? (
-          isLoading ? (
-            <LoadingIcon />
-          ) : (
-            <ResultDiv {...{ response }} />
-          )
-        ) : null}
-      </FlexDiv>
+      {isSearched || isError ? (
+        <FlexDiv>
+          {isError ? (
+            <ErrorMsg>{errorMsg}</ErrorMsg>
+          ) : isSearched ? (
+            isLoading ? (
+              <LoadingIcon />
+            ) : (
+              <Result {...{ setState, state }} />
+            )
+          ) : null}
+        </FlexDiv>
+      ) : (
+        <Instructions {...{ state }} />
+      )}
     </MainDiv>
   );
 };

@@ -1,26 +1,16 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import {
-  Header,
-  FrontPanel,
-  Instructions,
-  Footer,
-  Main,
-} from "../components/index";
+import { Header, FrontPanel, Footer, Main } from "../components/index";
 
 interface PromiseObj {
   status: string;
-  title: string;
-  format: {
-    "240": string;
-    "360": string;
-    "480": string;
-  };
   img: string;
+  title: string;
+  format: Record<string, string[]>;
 }
 
 interface StateObj {
-  response: PromiseObj;
+  response: PromiseObj | null;
   isLoading: boolean;
   isSearched: boolean;
   isError: boolean;
@@ -34,8 +24,8 @@ const GlobalStyle = createGlobalStyle`
   :root{
     font-size: 25px;
   }
-  body{
-    color: white;
+  html{
+    overflow-x: hidden;
   }
 `;
 
@@ -46,16 +36,7 @@ const HeaderDiv = styled(Header)`
 
 const Index = (): React.ReactElement => {
   const [state, setState] = useState<StateObj>({
-    response: {
-      status: "",
-      img: "",
-      title: "",
-      format: {
-        "240": "",
-        "360": "",
-        "480": "",
-      },
-    },
+    response: null,
     isLoading: false,
     isSearched: false,
     isError: false,
@@ -65,9 +46,8 @@ const Index = (): React.ReactElement => {
     <React.Fragment>
       <GlobalStyle />
       <HeaderDiv siteTitle="YouLiking" />
-      <FrontPanel {...{ setState }} />
-      <Main {...{ state }} />
-      <Instructions {...{ state }} />
+      <FrontPanel {...{ setState, state }} />
+      <Main {...{ setState, state }} />
       <Footer />
     </React.Fragment>
   );
