@@ -7,6 +7,7 @@ interface PromiseObj {
   img: string;
   title: string;
   format: Record<string, string[]>;
+  k_id: string;
 }
 
 interface StateObj {

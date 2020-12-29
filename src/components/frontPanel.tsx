@@ -72,7 +72,7 @@ const requestData = (
       `http://youliking.com/api/youtube_api.php?v=${groups.videoID}&url=${groups.url}`
     )
       .then((res) => res.json())
-      .catch((err) => console.error(err));
+      .catch((err) => console.log(err));
   }
 };
 

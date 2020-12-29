@@ -1,6 +1,7 @@
 //add configurable data and plugins here, see: https://www.gatsbyjs.com/docs/gatsby-config/
 
 module.exports = {
+  pathPrefix: "/YouLiking_UI",
   siteMetadata: {
     title: `YouLiking`,
     author: `crocsdundee`,
