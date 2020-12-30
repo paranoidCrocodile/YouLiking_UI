@@ -2,59 +2,112 @@ import React, { useRef, Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { StateObj, PromiseObj } from "../pages/index";
 import merge from "../utils/merge";
+import mediaQuery from "../utils/media";
 
 interface FrontPanelProps {
   setState: Dispatch<SetStateAction<StateObj>>;
 }
 
 const Front = styled.div`
-  width: 100vw;
-  height: 40vh;
+  width: 100%;
   color: black;
 `;
 
 const FrontDiv = styled.div`
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 0 2.5rem 0;
+  padding: 1.5rem 1rem 2.5rem 1rem;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  font-size: 3.5rem;
-`;
-
-const Subtitle = styled.p`
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  & > h1 {
+    font-size: 3.5rem;
+    margin: 0;
+  }
+  & > p {
+    margin-bottom: 1rem;
+  }
+  ${mediaQuery("", "tiny")} {
+    height: auto;
+    & > h1 {
+      font-size: 0.8rem;
+    }
+    & > p {
+      font-size: 0.35rem;
+    }
+  }
+  ${mediaQuery("tiny", "mobile")} {
+    height: auto;
+    & > h1 {
+      font-size: 1rem;
+    }
+    & > p {
+      font-size: 0.5rem;
+    }
+  }
+  ${mediaQuery("mobile", "tablet")} {
+    height: auto;
+    & > h1 {
+      font-size: 1.5rem;
+    }
+    & > p {
+      font-size: 0.75rem;
+    }
+  }
+  ${mediaQuery("tablet", "laptop")} {
+    height: auto;
+    & > h1 {
+      font-size: 2rem;
+    }
+    & > p {
+      font-size: 0.8rem;
+    }
+  }
+  ${mediaQuery("laptop", "")} {
+    height: 45vh;
+  }
 `;
 
 const SearchBarDiv = styled.div`
-  width: 20rem;
   height: 3rem;
   vertical-align: top;
-`;
-
-const SearchBar = styled.input`
-  display: inline-block;
-  width: 80%;
-  height: 100%;
-  font-size: 0.7rem;
-  border: none;
-  background-color: #e8e8e8;
-`;
-
-const SearchButton = styled.button`
-  display: inline-block;
-  width: 20%;
-  height: 100%;
-  background-color: #ff0000;
-  border: none;
-  color: white;
+  & > input {
+    width: 80%;
+    height: 100%;
+    border: none;
+    background-color: #e8e8e8;
+  }
+  & > button {
+    width: 20%;
+    height: 100%;
+    background-color: #ff0000;
+    border: none;
+    color: white;
+  }
+  ${mediaQuery("", "tiny")} {
+    & > input {
+      font-size: 0.35rem;
+    }
+    & > button {
+      font-size: 0.35rem;
+    }
+  }
+  ${mediaQuery("tiny", "mobile")} {
+    & > input {
+      font-size: 0.5rem;
+    }
+    & > button {
+      font-size: 0.5rem;
+    }
+  }
+  ${mediaQuery("mobile", "tablet")} {
+    & > input {
+      font-size: 0.65rem;
+    }
+    & > button {
+      font-size: 0.8rem;
+    }
+  }
 `;
 
 const extractURL = (link: string): RegExpMatchArray | null =>
@@ -82,15 +135,15 @@ const FrontPanel = ({ setState }: FrontPanelProps): React.ReactElement => {
   return (
     <Front>
       <FrontDiv>
-        <Title>Youtube Downloader</Title>
-        <Subtitle>Download any high-quality Youtube video for free!</Subtitle>
+        <h1>Youtube Downloader</h1>
+        <p>Download any high-quality Youtube video for free!</p>
         <SearchBarDiv>
-          <SearchBar
+          <input
             ref={searchValue}
             type="text"
             placeholder="https://www.youtube.com/watch?v=g3jCAyPai2Y"
           />
-          <SearchButton
+          <button
             onClick={async () => {
               try {
                 const now = new Date().getTime();
@@ -131,7 +184,7 @@ const FrontPanel = ({ setState }: FrontPanelProps): React.ReactElement => {
             }}
           >
             Search
-          </SearchButton>
+          </button>
         </SearchBarDiv>
       </FrontDiv>
     </Front>

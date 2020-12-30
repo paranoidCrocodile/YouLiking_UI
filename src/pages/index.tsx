@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import React, { useState, useEffect } from "react";
 import { Header, FrontPanel, Footer, Main } from "../components/index";
+import Global from "../style/global";
+import Reset from "../style/reset";
+import mediaQuery from "../utils/media";
 
 interface PromiseObj {
   status: string;
@@ -18,23 +20,6 @@ interface StateObj {
   errorMsg: string;
 }
 
-const GlobalStyle = createGlobalStyle`
-  *{
-    margin: 0;
-  }
-  :root{
-    font-size: 25px;
-  }
-  html{
-    overflow-x: hidden;
-  }
-`;
-
-const HeaderDiv = styled(Header)`
-  margin: 0 auto;
-  max-width: 1200px;
-`;
-
 const Index = (): React.ReactElement => {
   const [state, setState] = useState<StateObj>({
     response: null,
@@ -43,10 +28,16 @@ const Index = (): React.ReactElement => {
     isError: false,
     errorMsg: "",
   });
+  useEffect(() => {
+    console.log(mediaQuery("", "tiny"));
+    console.log(mediaQuery("tiny", "mobile"));
+    console.log(mediaQuery("mobile", ""));
+  });
   return (
     <React.Fragment>
-      <GlobalStyle />
-      <HeaderDiv siteTitle="YouLiking" />
+      <Reset />
+      <Global />
+      <Header siteTitle="YouLiking" />
       <FrontPanel {...{ setState, state }} />
       <Main {...{ setState, state }} />
       <Footer />

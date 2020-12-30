@@ -16,6 +16,8 @@ const MainDiv = styled.main`
 const FlexDiv = styled.div`
   margin: 0 auto;
   max-width: 1200px;
+  min-height: 22.5rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
